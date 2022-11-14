@@ -32,7 +32,7 @@ public class PublicEventController {
     }
 
     @GetMapping(value = "/{id}")
-    public EventFullDto getEventForId(@PathVariable("id")  long id, HttpServletRequest request){
+    public EventFullDto getEventForId(@PathVariable("id")  long id, HttpServletRequest request) {
         return null;
     }
 }

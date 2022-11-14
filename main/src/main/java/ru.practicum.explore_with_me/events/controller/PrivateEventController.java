@@ -27,13 +27,13 @@ public class PrivateEventController {
 
     @PatchMapping()
     public EventFullDto updateEvent(@PathVariable("id") Long id,
-                                    @RequestBody UpdateEventRequest updateRequest){
+                                    @RequestBody UpdateEventRequest updateRequest) {
         return null;
     }
 
     @PostMapping()
     public EventFullDto createEvent(@PathVariable("id") Long id,
-                                    @RequestBody NewEventDto newEvent){
+                                    @RequestBody NewEventDto newEvent) {
         return null;
     }
 
