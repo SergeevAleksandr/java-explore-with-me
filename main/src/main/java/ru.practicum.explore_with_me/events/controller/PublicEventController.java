@@ -30,10 +30,9 @@ public class PublicEventController {
                                          ) {
         return null;
     }
-    @GetMapping(value = "/{id}")
-    public EventFullDto getEventForId(@PathVariable("id")  long id,
-                                      HttpServletRequest request){
 
+    @GetMapping(value = "/{id}")
+    public EventFullDto getEventForId(@PathVariable("id")  long id, HttpServletRequest request){
         return null;
     }
 }

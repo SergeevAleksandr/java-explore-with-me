@@ -24,29 +24,28 @@ public class PrivateEventController {
                                               @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
         return null;
     }
+
     @PatchMapping()
     public EventFullDto updateEvent(@PathVariable("id") Long id,
                                     @RequestBody UpdateEventRequest updateRequest){
-
         return null;
     }
+
     @PostMapping()
     public EventFullDto createEvent(@PathVariable("id") Long id,
                                     @RequestBody NewEventDto newEvent){
-
         return null;
     }
+
     @GetMapping(value = "/{eventId}")
     public EventFullDto getUserEventForId(@PathVariable("id") Long id,
                                        @PathVariable("eventId") Long eventId) {
-
         return null;
     }
 
     @PatchMapping(value = "/{eventId}")
     public EventFullDto setCancelEvent(@PathVariable("id") Long id,
                                          @PathVariable("eventId") Long eventId) {
-
         return null;
     }
 
