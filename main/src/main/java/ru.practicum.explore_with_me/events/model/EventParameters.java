@@ -26,7 +26,9 @@ public class EventParameters {
     public EventParameters(String text, Long[] categories, Boolean paid, String rangeStart,
                        String rangeEnd, Boolean onlyAvailable, String sort, Integer from, Integer size) {
         this.text = text;
-        this.categories = Arrays.asList(categories);
+        if (categories != null) {
+            this.categories = Arrays.asList(categories);
+        }
         this.paid = paid;
         if (rangeStart != null) {
             this.rangeStart = LocalDateTime.parse(rangeStart, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
