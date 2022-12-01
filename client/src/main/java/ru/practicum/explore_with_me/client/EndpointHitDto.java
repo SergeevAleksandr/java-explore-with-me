@@ -1,4 +1,4 @@
-package ru.practicum.explore_with_me.stat.model.enums;
+package ru.practicum.explore_with_me.client;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ViewStats {
+public class EndpointHitDto {
     private String app;
+
     private String uri;
-    private Long hits;
+
+    private String ip;
+
+    private String timestamp;
 }

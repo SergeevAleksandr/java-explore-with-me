@@ -1,8 +1,10 @@
 package ru.practicum.explore_with_me.users.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.practicum.explore_with_me.exception.NotFoundException;
+import ru.practicum.explore_with_me.exception.ConflictException;
+import ru.practicum.explore_with_me.exception.ObjectNotFoundException;
 import ru.practicum.explore_with_me.users.model.User;
 import ru.practicum.explore_with_me.users.model.dto.NewUserRequest;
 import ru.practicum.explore_with_me.users.model.dto.UserDto;
@@ -17,18 +19,21 @@ import java.util.stream.Collectors;
 public class UserServiceImpl {
     private final UserRepository userRepository;
 
-    public List<UserDto> getUsers(List<Long> ids) {
-        return userRepository.findAllById(ids).stream().map(UserMapper::toUserDto)
+    public List<UserDto> getUsers(List<Long> ids, Pageable pageRequest) {
+        return userRepository.getUsers(ids, pageRequest).stream().map(UserMapper::toUserDto)
                 .collect(Collectors.toList());
     }
 
     public UserDto createUser(NewUserRequest newUser) {
+        if (userRepository.findAll().stream().map(User::getName).collect(Collectors.toList()).contains(newUser.getName())) {
+            throw new ConflictException("Имя занято");
+        }
         return UserMapper.toUserDto(userRepository.save(new User(0L, newUser.getName(), newUser.getEmail())));
     }
 
     public void deleteUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(() ->
-                new NotFoundException("Пользователь с таким id не найден"));
+                new ObjectNotFoundException("Пользователь с таким id не найден"));
         userRepository.delete(user);
     }
 }

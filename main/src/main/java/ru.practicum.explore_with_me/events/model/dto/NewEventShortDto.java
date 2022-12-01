@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.explore_with_me.categories.model.dto.CategoryDto;
-import ru.practicum.explore_with_me.events.model.Location;
+import ru.practicum.explore_with_me.locations.Location;
 
 import javax.validation.constraints.NotBlank;
 

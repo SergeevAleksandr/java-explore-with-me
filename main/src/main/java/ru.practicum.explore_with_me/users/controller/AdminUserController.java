@@ -2,6 +2,7 @@ package ru.practicum.explore_with_me.users.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explore_with_me.users.model.dto.NewUserRequest;
 import ru.practicum.explore_with_me.users.model.dto.UserDto;
@@ -22,10 +23,10 @@ public class AdminUserController {
     public List<UserDto> getUsers(@PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                   @Positive @RequestParam(name = "size", defaultValue = "10") Integer size,
                                   @RequestParam(name = "ids") List<Long> ids) {
-        //int page = from / size;
-        //final PageRequest pageRequest = PageRequest.of(page, size);
+        int page = from / size;
+        final PageRequest pageRequest = PageRequest.of(page, size);
         log.info("Получаем пользователей");
-        return userService.getUsers(ids);
+        return userService.getUsers(ids,pageRequest);
 
     }
 
@@ -33,7 +34,6 @@ public class AdminUserController {
     public UserDto createUser(@RequestBody NewUserRequest newUser) {
         log.info("Добавляем пользователя- {}", newUser.getName());
         return userService.createUser(newUser);
-
     }
 
     @DeleteMapping(value = "/{userid}")

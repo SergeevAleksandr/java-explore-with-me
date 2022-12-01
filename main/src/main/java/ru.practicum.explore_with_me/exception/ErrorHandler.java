@@ -16,7 +16,7 @@ import java.util.Collections;
 public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleNotFoundException(final NotFoundException e) {
+    public ApiError handleNotFoundException(final ObjectNotFoundException e) {
         return new ApiError(Collections.singletonList(Arrays.toString(e.getStackTrace())),e.getMessage(),"The required object was not found.",
                 HttpStatus.NOT_FOUND.toString(), LocalDateTime.now().toString());
     }
@@ -29,8 +29,19 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<String> handleThrowable(final Throwable e) {
-        return new ResponseEntity<>("Произошла непредвиденная ошибка. " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleThrowable(final Throwable e) {
+        return new ApiError(Arrays.asList(e.getStackTrace().toString()), e.getMessage(),
+                "Error occurred",
+                HttpStatus.BAD_REQUEST.toString(),  LocalDateTime.now().toString());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiError handleRuntimeException(final ConflictException e) {
+        return new ApiError(Arrays.asList(e.getStackTrace().toString()), e.getMessage(),
+                "Имя категории должно быть уникальными",
+                HttpStatus.CONFLICT.toString(),  LocalDateTime.now().toString());
     }
 
 

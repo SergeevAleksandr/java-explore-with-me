@@ -1,4 +1,4 @@
-package ru.practicum.explore_with_me.events.model.dto;
+package ru.practicum.explore_with_me.locations;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

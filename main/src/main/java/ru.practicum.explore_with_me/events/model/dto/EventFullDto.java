@@ -2,7 +2,7 @@ package ru.practicum.explore_with_me.events.model.dto;
 
 import lombok.*;
 import ru.practicum.explore_with_me.categories.model.dto.CategoryDto;
-import ru.practicum.explore_with_me.events.model.Location;
+import ru.practicum.explore_with_me.locations.Location;
 import ru.practicum.explore_with_me.users.model.dto.UserShortDto;
 
 import javax.validation.constraints.NotBlank;
@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class EventFullDto {
     private String annotation;
     private CategoryDto category;
-    private Integer confirmedRequests;
+    private Long confirmedRequests;
     private String createdOn;
     private String description;
     private String eventDate;
@@ -26,9 +26,9 @@ public class EventFullDto {
     private Boolean paid;
     private Integer participantLimit;
     private String publishedOn;
-    private String requestModeration;
+    private Boolean requestModeration;
     private String state;
     @NotBlank
     private String title;
-    private Integer views;
+    private Long views;
 }

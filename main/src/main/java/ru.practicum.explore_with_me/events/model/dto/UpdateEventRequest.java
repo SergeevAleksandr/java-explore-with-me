@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateEventRequest {
     private String annotation;
-    private Integer category;
+    private Long category;
     private String description;
     private String eventDate;
-    private Integer eventId;
+    private Long eventId;
     private Boolean paid;
     private Integer participantLimit;
     private String title;

@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 public class EventShortDto {
     private String annotation;
     private CategoryDto category;
-    private Integer confirmedRequests;
+    private Long confirmedRequests;
     private String eventDate;
     @NotNull
     private Long id;
@@ -25,5 +25,5 @@ public class EventShortDto {
     private Boolean paid;
     @NotBlank
     private String title;
-    private Integer views;
+    private Long views;
 }

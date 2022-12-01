@@ -10,9 +10,9 @@ public class CompilationMapper {
     public static CompilationDto toCompilationDTO(Compilation compilation, List<EventShortDto> eventList) {
         return new CompilationDto(
                 compilation.getId(),
-                compilation.getTitle(),
+                eventList,
                 compilation.getPinned(),
-                eventList
+                compilation.getTitle()
         );
     }
 }

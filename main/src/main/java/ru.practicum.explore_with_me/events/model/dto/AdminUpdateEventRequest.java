@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.practicum.explore_with_me.events.model.Location;
+import ru.practicum.explore_with_me.locations.Location;
 
 @Getter
 @Setter

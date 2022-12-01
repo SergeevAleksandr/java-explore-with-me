@@ -28,8 +28,8 @@ public class Compilation {
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "compilations_events",
-            joinColumns = {@JoinColumn(name = "event_id")},
-            inverseJoinColumns = {@JoinColumn(name = "compilation_id")}
+            joinColumns = {@JoinColumn(name = "compilation_id")},
+            inverseJoinColumns = {@JoinColumn(name = "event_id")}
     )
     @ToString.Exclude
     private List<Event> events = new ArrayList<>();

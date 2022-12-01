@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.explore_with_me.categories.model.Category;
 import ru.practicum.explore_with_me.events.model.enums.EventStateEnum;
+import ru.practicum.explore_with_me.locations.Location;
 import ru.practicum.explore_with_me.users.model.User;
 
 
@@ -24,6 +25,8 @@ public class Event {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "event_category_id")
     private Category category;
+    @Column(name = "event_annotation")
+    private String annotation;
     @Column(name = "event_created")
     private LocalDateTime createdOn;
     @Column(name = "event_description")
@@ -49,6 +52,4 @@ public class Event {
     private EventStateEnum state;
     @Column(name = "event_title")
     private String title;
-    @Column(name = "event_annotation")
-    private String annotation;
 }
