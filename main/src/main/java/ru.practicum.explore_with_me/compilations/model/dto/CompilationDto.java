@@ -1,6 +1,7 @@
 package ru.practicum.explore_with_me.compilations.model.dto;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.explore_with_me.events.model.dto.EventShortDto;
 
 import javax.validation.constraints.NotBlank;
@@ -11,12 +12,13 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class CompilationDto {
     @NotNull
-    private Long id;
-    private List<EventShortDto> events;
+    Long id;
+    List<EventShortDto> events;
     @NotNull
-    private Boolean pinned;
+    Boolean pinned;
     @NotBlank
-    private String title;
+    String title;
 }

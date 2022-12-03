@@ -1,4 +1,4 @@
-package ru.practicum.explore_with_me.compilations.controller;
+package ru.practicum.explore_with_me.compilations.service.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

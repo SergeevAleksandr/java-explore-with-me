@@ -1,7 +1,9 @@
 package ru.practicum.explore_with_me.events.model;
 
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import ru.practicum.explore_with_me.events.model.enums.EventSortEnum;
@@ -12,16 +14,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
+@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 @Data
 public class EventParameters {
-    private String text;
-    private List<Long> categories;
-    private Boolean paid;
-    private LocalDateTime rangeStart;
-    private LocalDateTime rangeEnd;
-    private Boolean onlyAvailable;
-    private PageRequest pageRequest;
-    private EventSortEnum sort;
+    String text;
+    List<Long> categories;
+    Boolean paid;
+    LocalDateTime rangeStart;
+    LocalDateTime rangeEnd;
+    Boolean onlyAvailable;
+    PageRequest pageRequest;
+    EventSortEnum sort;
 
     public EventParameters(String text, Long[] categories, Boolean paid, String rangeStart,
                        String rangeEnd, Boolean onlyAvailable, String sort, Integer from, Integer size) {

@@ -1,8 +1,10 @@
 package ru.practicum.explore_with_me.events.model;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.explore_with_me.categories.model.Category;
 import ru.practicum.explore_with_me.events.model.enums.EventStateEnum;
 import ru.practicum.explore_with_me.locations.Location;
@@ -17,39 +19,68 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "events")
+@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class Event {
+    @Transient
+    final String eventId = "event_id";
+    @Transient
+    final String eventCategoryId = "event_category_id";
+    @Transient
+    final String eventAnnotation = "event_annotation";
+    @Transient
+    final String eventCreated = "event_created";
+    @Transient
+    final String eventDescription = "event_description";
+    @Transient
+    final String eventDate = "event_date";
+    @Transient
+    final String eventInitiatorId = "event_initiator_id";
+    @Transient
+    final String eventLocationId = "event_location_id";
+    @Transient
+    final String eventPaid = "event_paid";
+    @Transient
+    final String eventParticipantLimit = "event_participant_limit";
+    @Transient
+    final String eventPublished = "event_published";
+    @Transient
+    final String eventRequestModeration = "event_request_moderation";
+    @Transient
+    final String eventState = "event_state";
+    @Transient
+    final String eventTitle = "event_title";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "event_id")
-    private Long id;
+    @Column(name = eventId)
+    Long id;
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "event_category_id")
-    private Category category;
-    @Column(name = "event_annotation")
-    private String annotation;
-    @Column(name = "event_created")
-    private LocalDateTime createdOn;
-    @Column(name = "event_description")
-    private String description;
-    @Column(name = "event_date")
-    private LocalDateTime date;
+    @JoinColumn(name = eventCategoryId)
+    Category category;
+    @Column(name = eventAnnotation)
+    String annotation;
+    @Column(name = eventCreated)
+    LocalDateTime createdOn;
+    @Column(name = eventDescription)
+    String description;
+    @Column(name = eventDate)
+    LocalDateTime date;
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "event_initiator_id")
-    private User initiator;
+    @JoinColumn(name = eventInitiatorId)
+    User initiator;
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "event_location_id")
-    private Location location;
-    @Column(name = "event_paid")
-    private Boolean paid;
-    @Column(name = "event_participant_limit")
-    private Integer participantLimit;
-    @Column(name = "event_published")
-    private LocalDateTime publishedOn;
-    @Column(name = "event_request_moderation")
-    private Boolean requestModeration;
-    @Column(name = "event_state")
+    @JoinColumn(name = eventLocationId)
+    Location location;
+    @Column(name = eventPaid)
+    Boolean paid;
+    @Column(name = eventParticipantLimit)
+    Integer participantLimit;
+    @Column(name = eventPublished)
+    LocalDateTime publishedOn;
+    @Column(name = eventRequestModeration)
+    Boolean requestModeration;
+    @Column(name = eventState)
     @Enumerated(EnumType.STRING)
-    private EventStateEnum state;
-    @Column(name = "event_title")
-    private String title;
+    EventStateEnum state;
+    @Column(name = eventTitle)
+    String title;
 }

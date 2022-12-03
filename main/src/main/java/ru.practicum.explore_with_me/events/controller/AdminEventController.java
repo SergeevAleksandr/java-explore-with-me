@@ -8,6 +8,7 @@ import ru.practicum.explore_with_me.events.model.dto.AdminUpdateEventRequest;
 import ru.practicum.explore_with_me.events.model.dto.EventFullDto;
 import ru.practicum.explore_with_me.events.service.EventService;
 
+import javax.persistence.Transient;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.List;
 @RequestMapping(path = "/admin/events")
 @RequiredArgsConstructor
 public class AdminEventController {
+
+    final String eventIdString = "/{eventId}";
     private final EventService eventsService;
 
     @GetMapping()
@@ -32,20 +35,20 @@ public class AdminEventController {
         return eventsService.getAdminEvents(params);
     }
 
-    @PutMapping(value = "/{eventId}")
+    @PutMapping(value = eventIdString)
     public EventFullDto updateEvent(@PathVariable("eventId") Long eventId,
                                     @RequestBody AdminUpdateEventRequest updateRequest) {
         log.info("Редактирование события id - {} Администратором", eventId);
         return eventsService.updateAdminEvent(eventId, updateRequest);
     }
 
-    @PatchMapping(value = "/{eventId}/publish")
+    @PatchMapping(value = eventIdString + "/publish")
     public EventFullDto setPublished(@PathVariable("eventId") Long eventId) {
         log.info("Администратор публекуеет событие - {}", eventId);
         return eventsService.setPublished(eventId);
     }
 
-    @PatchMapping(value = "/{eventId}/reject")
+    @PatchMapping(value = eventIdString + "/reject")
     public EventFullDto setRejected(@PathVariable("eventId") Long eventId) {
         log.info("Администратор отменяет событие - {}", eventId);
         return eventsService.setRejected(eventId);

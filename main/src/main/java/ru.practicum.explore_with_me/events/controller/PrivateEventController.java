@@ -11,6 +11,7 @@ import ru.practicum.explore_with_me.events.model.dto.UpdateEventRequest;
 import ru.practicum.explore_with_me.events.service.EventService;
 import ru.practicum.explore_with_me.requests.model.dto.ParticipationRequestDto;
 
+import javax.persistence.Transient;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 @RequestMapping(path = "/users/{id}/events")
 @RequiredArgsConstructor
 public class PrivateEventController {
+    final String eventIdString = "/{eventId}";
     private final EventService eventService;
 
     @GetMapping()
@@ -46,28 +48,28 @@ public class PrivateEventController {
         return eventService.createEvent(id, newEvent);
     }
 
-    @GetMapping(value = "/{eventId}")
+    @GetMapping(value = eventIdString)
     public EventFullDto getUserEventForId(@PathVariable("id") Long id,
                                        @PathVariable("eventId") Long eventId) {
         log.info("Получаем полную информацию об событии - {} добавленном пользователем - {}",eventId,id);
         return eventService.getUsersEventById(id, eventId);
     }
 
-    @PatchMapping(value = "/{eventId}")
+    @PatchMapping(value = eventIdString)
     public EventFullDto setCancelEvent(@PathVariable("id") Long id,
                                          @PathVariable("eventId") Long eventId) {
         log.info("Отмена события - {} добавленного пользователем {}",eventId,id);
         return eventService.setCancelledState(id, eventId);
     }
 
-    @GetMapping(value = "/{eventId}/requests")
+    @GetMapping(value = eventIdString + "/requests")
     public List<ParticipationRequestDto> getRequestsInUserEvent(@PathVariable("id") Long id,
                                                                 @PathVariable("eventId") Long eventId) {
         log.info("Получаем информацию о запросах на участие по событию - {} пользователя {}", eventId,id);
         return eventService.getUsersRequestByEvent(id, eventId);
     }
 
-    @PatchMapping(value = "/{eventId}/requests/{reqId}/confirm")
+    @PatchMapping(value = eventIdString + "/requests/{reqId}/confirm")
     public ParticipationRequestDto setRequestConfirmed(@PathVariable("id") Long id,
                                                        @PathVariable("eventId") Long eventId,
                                                        @PathVariable("reqId") Long reqId) {
@@ -75,7 +77,7 @@ public class PrivateEventController {
         return eventService.setRequestConfirmed(id, eventId, reqId);
     }
 
-    @PatchMapping(value = "/{eventId}/requests/{reqId}/reject")
+    @PatchMapping(value = eventIdString + "/requests/{reqId}/reject")
     public ParticipationRequestDto setRequestRejected(@PathVariable("id") Long id,
                                                       @PathVariable("eventId") Long eventId,
                                                       @PathVariable("reqId") Long reqId) {

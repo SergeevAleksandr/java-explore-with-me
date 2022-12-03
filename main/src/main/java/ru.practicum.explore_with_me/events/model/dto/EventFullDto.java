@@ -1,6 +1,7 @@
 package ru.practicum.explore_with_me.events.model.dto;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.explore_with_me.categories.model.dto.CategoryDto;
 import ru.practicum.explore_with_me.locations.Location;
 import ru.practicum.explore_with_me.users.model.dto.UserShortDto;
@@ -12,23 +13,24 @@ import javax.validation.constraints.NotNull;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class EventFullDto {
-    private String annotation;
-    private CategoryDto category;
-    private Long confirmedRequests;
-    private String createdOn;
-    private String description;
-    private String eventDate;
+    String annotation;
+    CategoryDto category;
+    Long confirmedRequests;
+    String createdOn;
+    String description;
+    String eventDate;
     @NotNull
-    private Long id;
-    private UserShortDto initiator;
-    private Location location;
-    private Boolean paid;
-    private Integer participantLimit;
-    private String publishedOn;
-    private Boolean requestModeration;
-    private String state;
+    Long id;
+    UserShortDto initiator;
+    Location location;
+    Boolean paid;
+    Integer participantLimit;
+    String publishedOn;
+    Boolean requestModeration;
+    String state;
     @NotBlank
-    private String title;
-    private Long views;
+    String title;
+    Long views;
 }

@@ -1,7 +1,9 @@
 package ru.practicum.explore_with_me.events.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import ru.practicum.explore_with_me.events.model.enums.EventStateEnum;
 
@@ -13,14 +15,15 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
+@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class AdminEventParameters {
 
-    private List<Long> users;
-    private List<Long> categories;
-    private LocalDateTime rangeStart;
-    private LocalDateTime rangeEnd;
-    private List<EventStateEnum> states;
-    private PageRequest pageRequest;
+    List<Long> users;
+    List<Long> categories;
+    LocalDateTime rangeStart;
+    LocalDateTime rangeEnd;
+    List<EventStateEnum> states;
+    PageRequest pageRequest;
 
     public AdminEventParameters(List<Long> users, List<Long> categories, String rangeStart,
                                 String rangeEnd, List<String> states, Integer from, Integer size) {

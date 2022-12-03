@@ -1,8 +1,10 @@
 package ru.practicum.explore_with_me.requests.model;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.explore_with_me.events.model.Event;
 import ru.practicum.explore_with_me.requests.model.enums.RequestStatusEnum;
 import ru.practicum.explore_with_me.users.model.User;
@@ -15,21 +17,32 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "requests")
+@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class Request {
+    @Transient
+    final String requestId = "request_id";
+    @Transient
+    final String requestStatus = "request_status";
+    @Transient
+    final String requestRequesterId = "request_requester_id";
+    @Transient
+    final String requestCreated = "request_created";
+    @Transient
+    final String requestEventId = "request_event_id";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "request_id")
-    private Long id;
+    @Column(name = requestId)
+    Long id;
     @Enumerated(EnumType.STRING)
-    @Column(name = "request_status")
-    private RequestStatusEnum status;
+    @Column(name = requestStatus)
+    RequestStatusEnum status;
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "request_requester_id")
-    private User requester;
-    @Column(name = "request_created")
-    private LocalDateTime created;
+    @JoinColumn(name = requestRequesterId)
+    User requester;
+    @Column(name = requestCreated)
+    LocalDateTime created;
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "request_event_id")
-    private Event event;
+    @JoinColumn(name = requestEventId)
+    Event event;
 }
 

@@ -1,19 +1,22 @@
 package ru.practicum.explore_with_me.events.model.dto;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class UpdateEventRequest {
-    private String annotation;
-    private Long category;
-    private String description;
-    private String eventDate;
-    private Long eventId;
-    private Boolean paid;
-    private Integer participantLimit;
-    private String title;
+    String annotation;
+    Long category;
+    String description;
+    String eventDate;
+    Long eventId;
+    Boolean paid;
+    Integer participantLimit;
+    String title;
 }
