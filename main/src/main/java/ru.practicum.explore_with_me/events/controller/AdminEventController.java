@@ -8,7 +8,6 @@ import ru.practicum.explore_with_me.events.model.dto.AdminUpdateEventRequest;
 import ru.practicum.explore_with_me.events.model.dto.EventFullDto;
 import ru.practicum.explore_with_me.events.service.EventService;
 
-import javax.persistence.Transient;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;

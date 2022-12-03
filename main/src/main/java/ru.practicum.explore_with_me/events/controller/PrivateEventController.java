@@ -11,7 +11,6 @@ import ru.practicum.explore_with_me.events.model.dto.UpdateEventRequest;
 import ru.practicum.explore_with_me.events.service.EventService;
 import ru.practicum.explore_with_me.requests.model.dto.ParticipationRequestDto;
 
-import javax.persistence.Transient;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
