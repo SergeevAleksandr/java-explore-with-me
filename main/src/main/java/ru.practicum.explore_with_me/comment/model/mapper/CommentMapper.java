@@ -17,9 +17,10 @@ public class CommentMapper {
         comment.setText(commentDto.getText());
         comment.setEvent(event);
         comment.setCommentator(commentator);
-        comment.setByAdmin(commentDto.getByAdmin());
-        comment.setChanged(commentDto.getChanged());
-
+        if (comment.getByAdmin() == null) comment.setByAdmin(Boolean.FALSE);
+        else comment.setByAdmin(commentDto.getByAdmin());
+        if (comment.getChanged() == null) comment.setChanged(Boolean.FALSE);
+        else comment.setChanged(commentDto.getChanged());
         return comment;
     }
 

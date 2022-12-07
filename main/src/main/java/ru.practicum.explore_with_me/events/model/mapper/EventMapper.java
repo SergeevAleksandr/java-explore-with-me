@@ -2,6 +2,7 @@ package ru.practicum.explore_with_me.events.model.mapper;
 
 import ru.practicum.explore_with_me.categories.model.Category;
 import ru.practicum.explore_with_me.categories.model.mapper.CategoryMapper;
+import ru.practicum.explore_with_me.comment.model.dto.CommentFullDto;
 import ru.practicum.explore_with_me.events.model.Event;
 import ru.practicum.explore_with_me.events.model.dto.EventFullDto;
 import ru.practicum.explore_with_me.events.model.dto.EventShortDto;
@@ -13,6 +14,7 @@ import ru.practicum.explore_with_me.users.model.mapper.UserMapper;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class EventMapper {
     public static Event toEvent(NewEventDto event, Location location, Category category, User initiator) {
@@ -34,7 +36,7 @@ public class EventMapper {
         );
     }
 
-    public static EventShortDto toEventShortDto(Event event, Long confirmedRequests, Long view) {
+    public static EventShortDto toEventShortDto(Event event, Long confirmedRequests, Long view,List<CommentFullDto> commentFullDtoList) {
         return new EventShortDto(
                 event.getAnnotation(),
                 CategoryMapper.toCategoryDto(event.getCategory()),
@@ -44,11 +46,12 @@ public class EventMapper {
                 UserMapper.toUserShortDto(event.getInitiator()),
                 event.getPaid(),
                 event.getTitle(),
-                view
+                view,
+                commentFullDtoList
         );
     }
 
-    public static EventFullDto toEventFullDto(Event event, Long confirmRequests, Long views) {
+    public static EventFullDto toEventFullDto(Event event, Long confirmRequests, Long views, List<CommentFullDto> commentFullDtoList) {
         return new EventFullDto(
                 event.getAnnotation(),
                 CategoryMapper.toCategoryDto(event.getCategory()),
@@ -65,8 +68,8 @@ public class EventMapper {
                 event.getRequestModeration(),
                 event.getState().toString(),
                 event.getTitle(),
-                views
-
+                views,
+                commentFullDtoList
         );
     }
 }

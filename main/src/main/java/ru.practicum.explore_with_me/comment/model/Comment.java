@@ -16,17 +16,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Comment {
     @Transient
-    final String commentId = "comment_id";
+    final String commentId = "comments_id";
     @Transient
-    final String commentText = "comment_text";
+    final String commentText = "comments_text";
     @Transient
-    final String eventId = "event_id";
+    final String eventString = "comments_event_id";
     @Transient
-    final String commentatorId = "commentator_id";
+    final String commentatorId = "comments_commentator_id";
     @Transient
-    final String commentDateString = "comment_date";
+    final String commentDateString = "comments_date";
     @Transient
-    final String byAdminString = "byAdmin";
+    final String byAdminString = "comments_by_admin";
+    @Transient
+    final String commentsChanged = "comments_Changed";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = commentId)
@@ -34,14 +36,15 @@ public class Comment {
     @Column(name = commentText)
     private String text;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = eventId)
+    @JoinColumn(name = eventString)
     private Event event;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = commentatorId)
     private User commentator;
-    @JoinColumn(name = commentDateString)
+    @Column(name = commentDateString)
     private LocalDateTime commentDate = LocalDateTime.now();
-    @JoinColumn(name = byAdminString)
+    @Column(name = byAdminString)
     private Boolean byAdmin;
+    @Column(name = commentsChanged)
     private Boolean changed;
 }

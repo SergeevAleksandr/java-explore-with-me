@@ -5,6 +5,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.explore_with_me.categories.model.Category;
 import ru.practicum.explore_with_me.categories.repository.CategoryRepository;
+import ru.practicum.explore_with_me.comment.model.Comment;
+import ru.practicum.explore_with_me.comment.model.dto.CommentFullDto;
+import ru.practicum.explore_with_me.comment.model.mapper.CommentMapper;
+import ru.practicum.explore_with_me.comment.repository.CommentRepository;
 import ru.practicum.explore_with_me.events.model.AdminEventParameters;
 import ru.practicum.explore_with_me.events.model.Event;
 import ru.practicum.explore_with_me.events.model.EventParameters;
@@ -41,6 +45,7 @@ public class EventService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final LocationRepository locationRepository;
+    private final CommentRepository commentRepository;
 
 
     public List<EventShortDto> get(EventParameters parameters, HttpServletRequest request) {
@@ -50,16 +55,31 @@ public class EventService {
         Map<Long, Long> viewsStat = statsService.getViews(eventList, false);
         if (parameters.getSort() != null) {
             if (parameters.getSort().equals(EventSortEnum.EVENT_DATE)) {
-                return eventList.stream().map(e -> EventMapper.toEventShortDto(e, requestRepository.getConfirmedRequests(e.getId()),
-                        viewsStat.getOrDefault(e.getId(), 0L))).collect(Collectors.toList());
+                return eventList.stream().map(e -> {
+                    List<CommentFullDto> commentFullDtoList = commentRepository.findAllByEventId(e.getId())
+                            .stream().sorted(Comparator.comparing(Comment::getCommentDate))
+                            .map(CommentMapper::toCommentFullDto).collect(Collectors.toList());
+                    return EventMapper.toEventShortDto(e, requestRepository.getConfirmedRequests(e.getId()),
+                            viewsStat.getOrDefault(e.getId(), 0L),commentFullDtoList);
+                }).collect(Collectors.toList());
             } else {
-                return eventList.stream().map(e -> EventMapper.toEventShortDto(e, requestRepository.getConfirmedRequests(e.getId()),
-                                viewsStat.getOrDefault(e.getId(), 0L))).sorted(Comparator.comparingLong(EventShortDto::getViews))
+                return eventList.stream().map(e -> {
+                            List<CommentFullDto> commentFullDtoList = commentRepository.findAllByEventId(e.getId())
+                                    .stream().sorted(Comparator.comparing(Comment::getCommentDate))
+                                    .map(CommentMapper::toCommentFullDto).collect(Collectors.toList());
+                            return EventMapper.toEventShortDto(e, requestRepository.getConfirmedRequests(e.getId()),
+                                    viewsStat.getOrDefault(e.getId(), 0L),commentFullDtoList);
+                        }).sorted(Comparator.comparingLong(EventShortDto::getViews))
                         .collect(Collectors.toList());
             }
         }
-        return eventList.stream().map(e -> EventMapper.toEventShortDto(e, requestRepository.getConfirmedRequests(e.getId()),
-                viewsStat.getOrDefault(e.getId(), 0L))).collect(Collectors.toList());
+        return eventList.stream().map(e -> {
+            List<CommentFullDto> commentFullDtoList = commentRepository.findAllByEventId(e.getId())
+                    .stream().sorted(Comparator.comparing(Comment::getCommentDate))
+                    .map(CommentMapper::toCommentFullDto).collect(Collectors.toList());
+            return EventMapper.toEventShortDto(e, requestRepository.getConfirmedRequests(e.getId()),
+                    viewsStat.getOrDefault(e.getId(), 0L),commentFullDtoList);
+        }).collect(Collectors.toList());
     }
 
     public EventFullDto getById(long eventId, HttpServletRequest request) {
@@ -69,7 +89,10 @@ public class EventService {
         }
         statsService.hit(request.getRequestURI(), request.getRemoteAddr());
         Long viewsStat = statsService.getView(event, false);
-        return EventMapper.toEventFullDto(event, requestRepository.getConfirmedRequests(event.getId()), viewsStat);
+        List<CommentFullDto> commentFullDtoList = commentRepository.findAllByEventId(event.getId())
+                .stream().sorted(Comparator.comparing(Comment::getCommentDate))
+                .map(CommentMapper::toCommentFullDto).collect(Collectors.toList());
+        return EventMapper.toEventFullDto(event, requestRepository.getConfirmedRequests(event.getId()), viewsStat,commentFullDtoList);
     }
 
     public List<EventShortDto> getUserEvents(long userId, Pageable page) {
@@ -77,7 +100,7 @@ public class EventService {
         List<Event> eventList = eventRepository.getEventsByInitiatorId(user.getId(), page);
         Map<Long, Long> viewsStat = statsService.getViews(eventList,false);
         return eventList.stream().map(e -> EventMapper.toEventShortDto(e, requestRepository.getConfirmedRequests(e.getId()),
-                viewsStat.getOrDefault(e.getId(), 0L))).collect(Collectors.toList());
+                viewsStat.getOrDefault(e.getId(), 0L),new ArrayList<>())).collect(Collectors.toList());
     }
 
     public EventFullDto updateEvent(Long userId, UpdateEventRequest updateRequest) {
@@ -113,7 +136,7 @@ public class EventService {
         if (updateRequest.getParticipantLimit() != null) event.setParticipantLimit(updateRequest.getParticipantLimit());
         eventRepository.save(event);
         Long viewsStat = statsService.getView(event, false);
-        return EventMapper.toEventFullDto(event, requestRepository.getConfirmedRequests(event.getId()), viewsStat);
+        return EventMapper.toEventFullDto(event, requestRepository.getConfirmedRequests(event.getId()), viewsStat,new ArrayList<>());
     }
 
     public EventFullDto createEvent(Long id, NewEventDto newEvent) {
@@ -128,7 +151,7 @@ public class EventService {
         Optional<Location> locationOptional = locationRepository.getLocationByLatAndLon(lat, lon);
         Location location;
         location = locationOptional.orElseGet(() -> locationRepository.save(new Location(0L, lat, lon)));
-        return EventMapper.toEventFullDto(eventRepository.save(EventMapper.toEvent(newEvent, location, category, user)), 0L, 0L);
+        return EventMapper.toEventFullDto(eventRepository.save(EventMapper.toEvent(newEvent, location, category, user)), 0L, 0L,new ArrayList<>());
     }
 
     public EventFullDto getUsersEventById(Long userId, Long eventId) {
@@ -136,7 +159,7 @@ public class EventService {
         Event event = checkEvent(eventId);
         checkUserEvent(event,user);
         Long viewsStat = statsService.getView(event, false);
-        return EventMapper.toEventFullDto(event, requestRepository.getConfirmedRequests(event.getId()), viewsStat);
+        return EventMapper.toEventFullDto(event, requestRepository.getConfirmedRequests(event.getId()), viewsStat,new ArrayList<>());
     }
 
     public EventFullDto setCancelledState(Long userId, Long eventId) {
@@ -149,7 +172,7 @@ public class EventService {
         event.setState(EventStateEnum.CANCELED);
 
         Long viewsStat = statsService.getView(event, false);
-        return EventMapper.toEventFullDto(event, requestRepository.getConfirmedRequests(event.getId()), viewsStat);
+        return EventMapper.toEventFullDto(event, requestRepository.getConfirmedRequests(event.getId()), viewsStat,new ArrayList<>());
     }
 
     public List<ParticipationRequestDto> getUsersRequestByEvent(Long userId, Long eventId) {
@@ -201,8 +224,13 @@ public class EventService {
         List<Event> eventList = eventRepository.getAdminEvents(params.getUsers(), params.getCategories(),
                 params.getRangeStart(), params.getRangeEnd(), params.getStates(), params.getPageRequest());
         Map<Long, Long> viewsStat = statsService.getViews(eventList, false);
-        return eventList.stream().map(e -> EventMapper.toEventFullDto(e, requestRepository.getConfirmedRequests(e.getId()),
-                viewsStat.getOrDefault(e.getId(), 0L))).collect(Collectors.toList());
+        return eventList.stream().map(e -> {
+                List<CommentFullDto> commentFullDtoList = commentRepository.findAllByEventId(e.getId())
+                        .stream().sorted(Comparator.comparing(Comment::getCommentDate))
+                        .map(CommentMapper::toCommentFullDto).collect(Collectors.toList());
+                return EventMapper.toEventFullDto(e, requestRepository.getConfirmedRequests(e.getId()),
+                    viewsStat.getOrDefault(e.getId(), 0L),commentFullDtoList);
+        }).collect(Collectors.toList());
     }
 
     public EventFullDto updateAdminEvent(Long eventId, AdminUpdateEventRequest updateRequest) {
@@ -241,7 +269,7 @@ public class EventService {
         }
         eventRepository.save(event);
         Long viewsStat = statsService.getView(event, false);
-        return EventMapper.toEventFullDto(event, requestRepository.getConfirmedRequests(event.getId()), viewsStat);
+        return EventMapper.toEventFullDto(event, requestRepository.getConfirmedRequests(event.getId()), viewsStat,new ArrayList<>());
 
     }
 
@@ -257,7 +285,7 @@ public class EventService {
         event.setState(EventStateEnum.PUBLISHED);
         eventRepository.save(event);
         Long viewsStat = statsService.getView(event, false);
-        return EventMapper.toEventFullDto(event, requestRepository.getConfirmedRequests(event.getId()), viewsStat);
+        return EventMapper.toEventFullDto(event, requestRepository.getConfirmedRequests(event.getId()), viewsStat,new ArrayList<>());
     }
 
     public EventFullDto setRejected(Long eventId) {
@@ -268,7 +296,7 @@ public class EventService {
         event.setState(EventStateEnum.CANCELED);
         eventRepository.save(event);
         Long viewsStat = statsService.getView(event, false);
-        return EventMapper.toEventFullDto(event, requestRepository.getConfirmedRequests(event.getId()), viewsStat);
+        return EventMapper.toEventFullDto(event, requestRepository.getConfirmedRequests(event.getId()), viewsStat,new ArrayList<>());
     }
 
     public User checkUser(Long id) {

@@ -3,11 +3,13 @@ package ru.practicum.explore_with_me.events.model.dto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.explore_with_me.categories.model.dto.CategoryDto;
+import ru.practicum.explore_with_me.comment.model.dto.CommentFullDto;
 import ru.practicum.explore_with_me.locations.Location;
 import ru.practicum.explore_with_me.users.model.dto.UserShortDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,4 +35,5 @@ public class EventFullDto {
     @NotBlank
     String title;
     Long views;
+    List<CommentFullDto> comments;
 }

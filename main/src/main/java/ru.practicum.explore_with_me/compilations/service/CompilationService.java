@@ -37,7 +37,7 @@ public class CompilationService {
             Map<Long, Long> viewsStat = statsService.getViews(eventList, false);
             eventDtoList = compilation.getEvents().stream()
                     .map(e -> EventMapper.toEventShortDto(e, requestRepository.getConfirmedRequests(e.getId()),
-                            viewsStat.getOrDefault(e.getId(), 0L))).collect(Collectors.toList());
+                            viewsStat.getOrDefault(e.getId(), 0L),new ArrayList<>())).collect(Collectors.toList());
         }
         return CompilationMapper.toCompilationDTO(compilationRepository.save(compilation), eventDtoList);
     }
@@ -80,7 +80,7 @@ public class CompilationService {
                 Map<Long, Long> viewsStat = statsService.getViews(compilation.getEvents(), false);
                 eventList = compilation.getEvents().stream()
                         .map(e -> EventMapper.toEventShortDto(e, requestRepository.getConfirmedRequests(e.getId()),
-                                viewsStat.getOrDefault(e.getId(), 0L))).collect(Collectors.toList());
+                                viewsStat.getOrDefault(e.getId(), 0L),new ArrayList<>())).collect(Collectors.toList());
             }
             compilationDtoList.add(CompilationMapper.toCompilationDTO(compilation, eventList));
         }
@@ -94,7 +94,7 @@ public class CompilationService {
             Map<Long, Long> viewsStat = statsService.getViews(compilation.getEvents(), false);
             eventList = compilation.getEvents().stream()
                     .map(e -> EventMapper.toEventShortDto(e, requestRepository.getConfirmedRequests(e.getId()),
-                            viewsStat.getOrDefault(e.getId(), 0L))).collect(Collectors.toList());
+                            viewsStat.getOrDefault(e.getId(), 0L),new ArrayList<>())).collect(Collectors.toList());
         }
         return CompilationMapper.toCompilationDTO(compilation, eventList);
     }

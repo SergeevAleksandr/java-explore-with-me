@@ -5,7 +5,9 @@ DROP TABLE IF EXISTS
     locations,
     events,
     requests,
-    compilations_events CASCADE;
+    compilations_events,
+    comments
+    CASCADE;
 
 CREATE TABLE IF NOT EXISTS locations
 (
@@ -79,7 +81,7 @@ CREATE TABLE IF NOT EXISTS comments
     comments_text VARCHAR(10000) NOT NULL,
     comments_event_id INTEGER,
     comments_commentator_id INTEGER,
-    comment_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    comments_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     comments_by_admin BOOLEAN NOT NULL,
     comments_changed BOOLEAN NOT NULL,
     CONSTRAINT pk_comments PRIMARY KEY (comments_id),
