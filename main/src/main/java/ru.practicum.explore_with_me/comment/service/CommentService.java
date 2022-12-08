@@ -26,6 +26,7 @@ public class CommentService {
     public  CommentFullDto createAdminComment(Long eventId, NewCommentDto newComment) {
         Event event = checkEvent(eventId);
         Comment comment = CommentMapper.toCommentEntity(newComment,null, event);
+        comment.setByAdmin(Boolean.TRUE);
         return CommentMapper.toCommentFullDto(commentRepository.save(comment));
     }
 
@@ -49,6 +50,7 @@ public class CommentService {
         Comment comment = checkComment(commentId);
         checkСommentEvent(eventId,comment);
         checkUserСomment(userId,comment);
+        if (updateComment.getText() != null) comment.setText(updateComment.getText());
         comment.setChanged(Boolean.TRUE);
         return CommentMapper.toCommentFullDto(commentRepository.save(comment));
     }

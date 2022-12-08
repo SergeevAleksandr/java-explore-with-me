@@ -3,6 +3,7 @@ package ru.practicum.explore_with_me.events.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explore_with_me.events.model.dto.EventFullDto;
 import ru.practicum.explore_with_me.events.model.dto.EventShortDto;
